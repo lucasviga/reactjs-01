@@ -4,40 +4,39 @@ import api from './services/api';
 import "./styles.css";
 
 function App() {
-  const [projects, setProjects] = useState([]);
+  const [repository, setRepositories] = useState([]);
 
   useEffect(() => {
-    api.get('projects').then(response => {
-      setProjects(response.data);
+    api.get('repositories').then(response => {
+      setRepositories(response.data);
     })
   }, []);
 
   async function handleAddRepository() {
-    const response = await api.post('projects', {
-      title: `Mobile com React Native ${Date.now()}`,
-      owner: "Lucas"
+    const response = await api.post('repositories', {
+      title: `reactnative-cameera ${Date.now()}`,
+      url: "https://github.com/lucasviga",
+      techs: ["Node", "Express", "TypeScript"]
     });
 
-    const newProject = response.data;
+    const newRepo = response.data;
 
-    setProjects([...projects, newProject]);
+    setRepositories([...repository, newRepo]);
   }
 
-  async function handleRemoveRepository(id) {
-    
-    const project = projects.filter(p => p.id !== id);
-    setProjects(project);
-
+  async function handleRemoveRepository(id) {    
+    const repo = repository.filter(p => p.id !== id);
+    setRepositories(repo);
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        {projects.map(project => (
-          <li key={project.id}>
-            <p>{project.title}</p>                    
+        {repository.map(repo => (
+          <li key={repo.id}>
+            <p>{repo.title}</p>                    
 
-            <button onClick={() => handleRemoveRepository(project.id)}>
+            <button onClick={() => handleRemoveRepository(repo.id)}>
               Remover
             </button>
           </li>

@@ -21,12 +21,13 @@ describe("App component", () => {
   it("should be able to add new repository", async () => {
     const { getByText, getByTestId } = render(<App />);
 
-    apiMock.onGet("projects").reply(200, []);
+    apiMock.onGet("repositories").reply(200, []);
 
-    apiMock.onPost("projects").reply(200, {
+    apiMock.onPost("repositories").reply(200, {
       id: "123",
-      title: "Mobile com React Native",
-      owner: "Lucas"
+      url: "https://github.com/josepholiveira",
+      title: "Desafio ReactJS",
+      techs: ["React", "Node.js"],
     });
 
     await actWait();
@@ -36,22 +37,23 @@ describe("App component", () => {
     await actWait();
 
     expect(getByTestId("repository-list")).toContainElement(
-      getByText("Mobile com React Native")
+      getByText("Desafio ReactJS")
     );
   });
 
   it("should be able to remove repository", async () => {
     const { getByText, getByTestId } = render(<App />);
 
-    apiMock.onGet("projects").reply(200, [
+    apiMock.onGet("repositories").reply(200, [
       {
         id: "123",
-        title: "Mobile com React Native",
-        owner: "Lucas"
+        url: "https://github.com/josepholiveira",
+        title: "Desafio ReactJS",
+        techs: ["React", "Node.js"],
       },
     ]);
 
-    apiMock.onDelete("projects/123").reply(204);
+    apiMock.onDelete("repositories/123").reply(204);
 
     await actWait();
 
